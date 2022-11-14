@@ -1,7 +1,10 @@
 import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.selector.ByText;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+
+import java.io.File;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Configuration.*;
@@ -27,13 +30,12 @@ static void beforeAll() {
         String userEmail = "test@test.com";
         String userNumber = "9999999999";
         String currentAddress = "Earth";
-
         $("[id=firstName]").setValue(firstName);
         $("[id=lastName]").setValue(lastName);
         $("[id=userEmail]").setValue(userEmail);
         $("[id=currentAddress]").setValue(currentAddress);
         //select Gender
-        $x("//label[@for='gender-radio-1']").click();
+        $("[id=genterWrapper]").$(new ByText("Male")).click();
         $("[id=userNumber]").setValue("9999999999");
         //select DateOfBirth
         $("[id=dateOfBirthInput]").click();
@@ -47,27 +49,21 @@ static void beforeAll() {
         $("[id=subjectsInput]").setValue("M");
         $("[id=react-select-2-option-0]").click();
         //select Hobbies
-        $x("//label[@for='hobbies-checkbox-1']").click();
+        $("[id=hobbiesWrapper]").$(new ByText("Sports")).click();
+        //upload file
+        $("[id=uploadPicture]").uploadFile(new File("src/test/resources/testfile.jpg"));
         //select State
         $("[id=state]").click();
-        $("[id=react-select-3-option-0]").click();
+        $("[id=stateCity-wrapper]").$(new ByText("NCR")).click();
         //select City
         $("[id=city]").click();
-        $("[id=react-select-4-option-0]").click();
+        $("[id=stateCity-wrapper]").$(new ByText("Delhi")).click();
         //click on Submit button
         $("[id=submit]").click();
         //Result checking
         $x("//div[@class='modal-content']").shouldBe(Condition.visible);
         $("[id=example-modal-sizes-title-lg]").shouldHave(text("Thanks for submitting the form"));
-        $x("//div//tr[1]//td[2]").shouldHave(text(firstName+" "+lastName));
-        $x("//div//tr[2]//td[2]").shouldHave(text(userEmail));
-        $x("//div//tr[3]//td[2]").shouldHave(text("Male"));
-        $x("//div//tr[4]//td[2]").shouldHave(text(userNumber));
-        $x("//div//tr[5]//td[2]").shouldHave(text("01 January,1993"));
-        $x("//div//tr[6]//td[2]").shouldHave(text("Maths"));
-        $x("//div//tr[7]//td[2]").shouldHave(text("Sports"));
-        $x("//div//tr[9]//td[2]").shouldHave(text(currentAddress));
-        $x("//div//tr[10]//td[2]").shouldHave(text("NCR Delhi"));
-
+        $(".table-responsive").shouldHave(text(firstName+" "+lastName), (text(userEmail)), (text("Male")), (text(userNumber)), (text("01 January,1993")), (text("Maths")),
+        (text("Sports")), (text("testfile.jpg")), (text(currentAddress)), (text("NCR Delhi")));
     }
 }
