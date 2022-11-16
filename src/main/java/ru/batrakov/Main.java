@@ -21,7 +21,7 @@ public class Main {
         System.out.println((short)(varShort+32768));
         System.out.println(varInteger+Integer.MAX_VALUE);
         //упражняемся с логическими опретаторами + условные конструкции
-        int a = 19;
+        int a = 18;
         if (a>20){
             System.out.println("a больше 20");
         }
